@@ -31,8 +31,9 @@
             android:layout_margin="20dp"
             android:padding="15dp"
             android:text="@string/string_button_start"
+            android:onClick="onClickStart"
             />
-        //android:onClick="onClickStart"
+
     </LinearLayout>
 
     <LinearLayout
