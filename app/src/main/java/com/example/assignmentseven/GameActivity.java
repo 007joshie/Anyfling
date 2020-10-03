@@ -26,7 +26,7 @@ public class GameActivity extends AppCompatActivity {
     int startWidth = height/2;
     int startHeight = width/2;
 
-    Projectile ball = new Projectile(startWidth,300,100);
+    Projectile ball = new Projectile(300,300,100);
 
     public class GraphicsView extends View{
         private GestureDetector gestureDetector;
@@ -46,7 +46,7 @@ public class GameActivity extends AppCompatActivity {
 
         // This just updates our position based on a delta that's given.
         public void update(int delta) {
-            if (ball.pos.y + ball.radius > width) return;
+            if (ball.pos.y + ball.radius > 1080) return;
             if (!ball.selected) {
                 ball.pos.y += delta * velocity;
                 postInvalidate(); // Tells our view to redraw itself, since our position changed.
