@@ -5,6 +5,10 @@ import android.graphics.Canvas;
 public class Projectile extends Shape{
     int speedMod;
     int radius;
+    float velocityX;
+    float velocityY;
+
+    boolean selected = false;
 
     public Projectile(int _startX, int _startY, int _radius){
         super(_startX,_startY,null);
@@ -34,8 +38,10 @@ public class Projectile extends Shape{
         // if the distance is less than the circle's
         // radius the point is inside!
         if (distance <= radius) {
+            selected = true;
             return true;
         }
+        selected = false;
         return false;
     }
 

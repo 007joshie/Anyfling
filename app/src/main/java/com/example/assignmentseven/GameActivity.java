@@ -1,9 +1,12 @@
 package com.example.assignmentseven;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -23,7 +26,7 @@ public class GameActivity extends AppCompatActivity {
     int startWidth = height/2;
     int startHeight = width/2;
 
-    Projectile ball = new Projectile(startWidth,startHeight,100);
+    Projectile ball = new Projectile(startWidth,300,100);
 
     public class GraphicsView extends View{
         private GestureDetector gestureDetector;
@@ -31,17 +34,65 @@ public class GameActivity extends AppCompatActivity {
 
         public GraphicsView(Context context){
             super(context);
+            velocity = .6f;
+            active = true;
             gestureDetector = new GestureDetector(context, new MyGestureListener());
             paint.setColor(getColor(R.color.colorPrimary));
+        }
+
+        private float velocity; // How fast the dot's moving
+
+        private boolean active; // If our logic is still active
+
+        // This just updates our position based on a delta that's given.
+        public void update(int delta) {
+            if (ball.pos.y + ball.radius > width) return;
+            if (!ball.selected) {
+                ball.pos.y += delta * velocity;
+                postInvalidate(); // Tells our view to redraw itself, since our position changed.
+            }
+        }
+
+        // The important part!
+        // This starts another thread (let's call this THREAD_B). THREAD_B will run completely
+        // independent from THREAD_A (above); therefore, FPS changes will not affect how
+        // our velocity increases our position.
+        public void startMyLogicThread() {
+            new Thread() {
+                public void run() {
+                    // Store the current time values.
+                    long time1 = System.currentTimeMillis();
+                    long time2;
+
+                    // Once active is false, this loop (and thread) terminates.
+                    while (active) {
+                        try {
+                            // This is your target delta. 25ms = 40fps
+                            Thread.sleep(5);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+
+                        time2 = System.currentTimeMillis(); // Get current time
+                        int delta = (int) (time2 - time1); // Calculate how long it's been since last update
+                        update(delta); // Call update with our delta
+                        time1 = time2; // Update our time variables.
+                    }
+                }
+            }.start(); // Start THREAD_B
+        }
+
+        // Method that's called by the activity
+        public void setActive(boolean active) {
+            this.active = active;
         }
 
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             ball.draw(canvas);
-            //canvas.drawCircle(ball.pos.x,ball.pos.y,ball.radius,paint);
             debugPosition(ball.pos.x,ball.pos.y);
-            invalidate();
+            postInvalidate();
 
         }
 
@@ -51,11 +102,8 @@ public class GameActivity extends AppCompatActivity {
                 return true;
             }else {
                 switch (event.getAction()) {
-
                     case MotionEvent.ACTION_DOWN:
                         Log.i("TAG", "Touch DOWN at " + event.getX() + "," + event.getY());
-//                        ball.x = (int) event.getX();
-//                        ball.y = (int) event.getY();
                         break;
                     case MotionEvent.ACTION_MOVE:
                         Log.i("TAG", "Touch MOVE at " + event.getX() + "," + event.getY());
@@ -66,8 +114,7 @@ public class GameActivity extends AppCompatActivity {
                         break;
                     case MotionEvent.ACTION_UP:
                         Log.i("TAG", "Touch UP at " + event.getX() + "," + event.getY());
-//                        ball.x = (int) event.getX();
-//                        ball.y = (int) event.getY();
+                        ball.selected = false;
                         break;
                 }
                 //return true;
@@ -81,26 +128,28 @@ public class GameActivity extends AppCompatActivity {
         //setContentView(R.layout.activity_game);
         TextView debugX = (TextView) findViewById(R.id.positionX);
         TextView debugY = (TextView) findViewById(R.id.positionY);
+        TextView debugVX = (TextView) findViewById(R.id.velocityX);
+        TextView debugVY = (TextView) findViewById(R.id.velocityY);
 
         debugX.setText("posX: "+_x);
         debugY.setText("posY: "+_y);
+        debugVX.setText("veloX: "+ ball.velocityX);
+        debugVY.setText("veloY: "+ball.velocityY);
     }
-
 
 
     class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onDown(MotionEvent e) {
             Log.i("TAG", "onDOWN");
-//            ball.y = (int) e.getX();
-//            ball.x = (int) e.getY();
             return true;
         }
 
         @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2,
-                               float velocityX, float velocityY) {
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             Log.i("TAG", "onFLING" );
+            ball.velocityX = velocityX/10;
+            ball.velocityY = velocityY/10;
             return false;
         }
     }
@@ -136,5 +185,16 @@ public class GameActivity extends AppCompatActivity {
         GraphicsView graphicsView = new GraphicsView(this);
         ConstraintLayout constraintLayout = (ConstraintLayout)findViewById(R.id.c1_game);
         constraintLayout.addView(graphicsView);
+
+        graphicsView.startMyLogicThread();
     }
+
+//    public void onPause() {
+//        super.onPause();
+//        // When our activity pauses, we want our view to stop updating its logic.
+//        // This prevents your application from running in the background, which eats up the battery.
+//        graphicsView.setActive(false);
+//    }
+
+
 }
