@@ -27,6 +27,7 @@ public class Projectile {
         int distY = py - cy;
         int distance = (int) Math.sqrt( (distX*distX) + (distY*distY) );
 
+
         // if the distance is less than the circle's
         // radius the point is inside!
         if (distance <= r) {
