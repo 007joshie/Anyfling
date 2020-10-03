@@ -1,5 +1,7 @@
 package com.example.assignmentseven;
 
+import android.graphics.Canvas;
+
 public class Projectile extends Shape{
     int speedMod;
     int radius;
@@ -11,13 +13,14 @@ public class Projectile extends Shape{
     }
 
     @Override
-    public void draw() {
-
+    public void draw(Canvas canvas) {
+        canvas.drawCircle(pos.x,pos.y,radius,color);
     }
 
     @Override
-    public void move() {
-
+    public void move(int dx, int dy) {
+        pos.x = dx;
+        pos.y = dy;
     }
 
     public boolean touched(int px, int py){

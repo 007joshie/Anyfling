@@ -1,5 +1,6 @@
 package com.example.assignmentseven;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -18,8 +19,10 @@ public abstract class Shape {
         rotation = 0;
         breakable = false;
         color = new Paint(Color.GREEN);
+        color.setColor(Color.GREEN);
+
     }
 
-    public abstract void draw();
-    public abstract void move();
+    public abstract void draw(Canvas canvas);
+    public abstract void move(int dx, int dy);
 }

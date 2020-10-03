@@ -32,14 +32,14 @@ public class GameActivity extends AppCompatActivity {
         public GraphicsView(Context context){
             super(context);
             gestureDetector = new GestureDetector(context, new MyGestureListener());
-
-            paint.setColor(getColor(R.color.colorPrimary)) ;
+            paint.setColor(getColor(R.color.colorPrimary));
         }
 
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            canvas.drawCircle(ball.pos.x,ball.pos.y,ball.radius,paint);
+            ball.draw(canvas);
+            //canvas.drawCircle(ball.pos.x,ball.pos.y,ball.radius,paint);
             debugPosition(ball.pos.x,ball.pos.y);
             invalidate();
 
@@ -59,10 +59,10 @@ public class GameActivity extends AppCompatActivity {
                         break;
                     case MotionEvent.ACTION_MOVE:
                         Log.i("TAG", "Touch MOVE at " + event.getX() + "," + event.getY());
+                        //if we are touching the main ball projectile
                         if (ball.touched((int)event.getX(),(int)event.getY())){
-                        ball.pos.x = (int) event.getX();
-                        ball.pos.y = (int) event.getY();
-                    }
+                            ball.move((int) event.getX(),(int) event.getY());
+                        }
                         break;
                     case MotionEvent.ACTION_UP:
                         Log.i("TAG", "Touch UP at " + event.getX() + "," + event.getY());
