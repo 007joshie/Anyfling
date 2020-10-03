@@ -6,4 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/c1_game"
-    />
+    >
+
+    <TextView
+        android:id="@+id/positionX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/positionY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        app:layout_constraintTop_toBottomOf="@id/positionX"
+        app:layout_constraintRight_toRightOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
