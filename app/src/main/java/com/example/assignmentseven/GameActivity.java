@@ -39,8 +39,8 @@ public class GameActivity extends AppCompatActivity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            canvas.drawCircle(ball.x,ball.y,ball.radius,paint);
-            debugPosition(ball.x,ball.y);
+            canvas.drawCircle(ball.pos.x,ball.pos.y,ball.radius,paint);
+            debugPosition(ball.pos.x,ball.pos.y);
             invalidate();
 
         }
@@ -59,9 +59,9 @@ public class GameActivity extends AppCompatActivity {
                         break;
                     case MotionEvent.ACTION_MOVE:
                         Log.i("TAG", "Touch MOVE at " + event.getX() + "," + event.getY());
-                        if (ball.touched((int)event.getX(), (int)event.getY(), ball.x,ball.y,ball.radius)) {
-                        ball.x = (int) event.getX();
-                        ball.y = (int) event.getY();
+                        if (ball.touched((int)event.getX(),(int)event.getY())){
+                        ball.pos.x = (int) event.getX();
+                        ball.pos.y = (int) event.getY();
                     }
                         break;
                     case MotionEvent.ACTION_UP:
@@ -84,7 +84,6 @@ public class GameActivity extends AppCompatActivity {
 
         debugX.setText("posX: "+_x);
         debugY.setText("posY: "+_y);
-        return;
     }
 
 
