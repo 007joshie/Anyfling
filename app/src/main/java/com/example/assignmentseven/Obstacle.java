@@ -1,4 +1,4 @@
 package com.example.assignmentseven;
 
-public class Selection {
+public class Obstacle {
 }
