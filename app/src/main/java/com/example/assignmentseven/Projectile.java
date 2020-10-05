@@ -5,9 +5,8 @@ import android.graphics.Canvas;
 public class Projectile extends Shape{
     int speedMod;
     int radius;
-    float velocityX;
-    float velocityY;
-
+    float velocityX = 0;
+    float velocityY = 0;
     boolean selected = false;
 
     public Projectile(int _startX, int _startY, int _radius){

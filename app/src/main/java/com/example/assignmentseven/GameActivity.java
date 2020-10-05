@@ -26,6 +26,10 @@ public class GameActivity extends AppCompatActivity {
     int startWidth = height/2;
     int startHeight = width/2;
 
+    float resistance = 0.04f;
+    float mass = 1.0f;
+    float gravity;
+
     Projectile ball = new Projectile(300,300,100);
 
     public class GraphicsView extends View{
@@ -34,7 +38,8 @@ public class GameActivity extends AppCompatActivity {
 
         public GraphicsView(Context context){
             super(context);
-            velocity = .6f;
+            gravity = .6f;
+            resistance = 0.9f;
             active = true;
             gestureDetector = new GestureDetector(context, new MyGestureListener());
             paint.setColor(getColor(R.color.colorPrimary));
@@ -46,9 +51,33 @@ public class GameActivity extends AppCompatActivity {
 
         // This just updates our position based on a delta that's given.
         public void update(int delta) {
-            if (ball.pos.y + ball.radius > 1080) return;
             if (!ball.selected) {
-                ball.pos.y += delta * velocity;
+                if (ball.pos.y + ball.radius < 1080 && ball.pos.y - ball.radius > 0){
+                    ball.pos.y += ball.velocityY;
+
+                    //ball.pos.y += delta * gravity ;
+                }
+                if (ball.pos.y + ball.radius > 1080){
+                    ball.pos.y = 1080 - ball.radius;
+                    ball.velocityY = 0;
+                }
+                if (ball.pos.y - ball.radius < 0){
+                    ball.pos.y = ball.radius;
+                    ball.velocityY = 0;
+                }
+
+                if (ball.pos.x + ball.radius < 2220 && ball.pos.x - ball.radius > 0){
+                    ball.pos.x += delta * ball.velocityX;
+
+                }
+                if (ball.pos.x + ball.radius > 2220){
+                    ball.pos.x = 2220 - ball.radius;
+                    ball.velocityX = 0;
+                }
+                if (ball.pos.x - ball.radius < 0){
+                    ball.pos.x = ball.radius;
+                    ball.velocityX = 0;
+                }
                 postInvalidate(); // Tells our view to redraw itself, since our position changed.
             }
         }
@@ -110,6 +139,8 @@ public class GameActivity extends AppCompatActivity {
                         //if we are touching the main ball projectile
                         if (ball.touched((int)event.getX(),(int)event.getY())){
                             ball.move((int) event.getX(),(int) event.getY());
+                            ball.velocityY = 0;
+                            ball.velocityY =0;
                         }
                         break;
                     case MotionEvent.ACTION_UP:
@@ -147,11 +178,18 @@ public class GameActivity extends AppCompatActivity {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            Log.i("TAG", "onFLING" );
-            ball.pos.x = (int) e2.getX();
-            ball.pos.y = (int) e2.getY();
-            ball.velocityX = velocityX/10;
-            ball.velocityY = velocityY/10;
+            Log.i("TAG", "onFLING wit VX:" + velocityX + " & VY: " + velocityY );
+            if (velocityX < -2000 || velocityX > 2000){
+                ball.velocityX = velocityX / 8000.0f;
+            }else {
+                ball.velocityX = velocityX / 3040.0f;
+            }
+
+            if (velocityY < -2000 || velocityY > 2000){
+                ball.velocityY = velocityY / 2000.0f;
+            }else {
+                ball.velocityY = velocityY / 1000.0f;
+            }
             return false;
         }
     }
@@ -185,7 +223,7 @@ public class GameActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"Version Number: " + version,Toast.LENGTH_SHORT).show();
 
         GraphicsView graphicsView = new GraphicsView(this);
-        ConstraintLayout constraintLayout = (ConstraintLayout)findViewById(R.id.c1_game);
+        ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.c1_game);
         constraintLayout.addView(graphicsView);
 
         graphicsView.PhysicsThread();
