@@ -57,7 +57,7 @@ public class GameActivity extends AppCompatActivity {
         // This starts another thread (let's call this THREAD_B). THREAD_B will run completely
         // independent from THREAD_A (above); therefore, FPS changes will not affect how
         // our velocity increases our position.
-        public void startMyLogicThread() {
+        public void PhysicsThread() {
             new Thread() {
                 public void run() {
                     // Store the current time values.
@@ -188,7 +188,7 @@ public class GameActivity extends AppCompatActivity {
         ConstraintLayout constraintLayout = (ConstraintLayout)findViewById(R.id.c1_game);
         constraintLayout.addView(graphicsView);
 
-        graphicsView.startMyLogicThread();
+        graphicsView.PhysicsThread();
     }
 
 //    public void onPause() {
