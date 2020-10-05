@@ -148,6 +148,8 @@ public class GameActivity extends AppCompatActivity {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             Log.i("TAG", "onFLING" );
+            ball.pos.x = (int) e2.getX();
+            ball.pos.y = (int) e2.getY();
             ball.velocityX = velocityX/10;
             ball.velocityY = velocityY/10;
             return false;
