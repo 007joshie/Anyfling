@@ -9,6 +9,8 @@ public class Projectile extends Shape{
     float velocityY = 0;
     boolean selected = false;
 
+    int hitbox = 10;
+
     public Projectile(int _startX, int _startY, int _radius){
         super(_startX,_startY,null);
         speedMod = 1;

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,12 +26,12 @@ public class GameActivity extends AppCompatActivity {
     int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     int startWidth = height/2;
     int startHeight = width/2;
+    boolean enabled = true;
 
-    float resistance = 0.04f;
-    float mass = 1.0f;
-    float gravity;
 
-    Projectile ball = new Projectile(300,300,100);
+    Projectile ball = new Projectile(300,300,80);
+    Projectile[] projectiles = {ball};
+
 
     public class GraphicsView extends View{
         private GestureDetector gestureDetector;
@@ -38,8 +39,6 @@ public class GameActivity extends AppCompatActivity {
 
         public GraphicsView(Context context){
             super(context);
-            gravity = .6f;
-            resistance = 0.9f;
             active = true;
             gestureDetector = new GestureDetector(context, new MyGestureListener());
             paint.setColor(getColor(R.color.colorPrimary));
@@ -52,19 +51,21 @@ public class GameActivity extends AppCompatActivity {
         // This just updates our position based on a delta that's given.
         public void update(int delta) {
             if (!ball.selected) {
-                if (ball.pos.y + ball.radius < 1080 && ball.pos.y - ball.radius > 0){
-                    ball.pos.y += ball.velocityY;
-
+                //if (ball.pos.y + ball.radius < 1080 && ball.pos.y - ball.radius > 0){
+                if (ball.pos.y + ball.radius < 1080){
+                    ball.velocityY= ball.velocityY + (Forces.Gravity * delta);
+                    if (ball.velocityY > 0 ) ball.pos.y += (int) ball.velocityY;
+                    else ball.pos.y += (int) ball.velocityY;
                     //ball.pos.y += delta * gravity ;
                 }
-                if (ball.pos.y + ball.radius > 1080){
-                    ball.pos.y = 1080 - ball.radius;
-                    ball.velocityY = 0;
-                }
-                if (ball.pos.y - ball.radius < 0){
-                    ball.pos.y = ball.radius;
-                    ball.velocityY = 0;
-                }
+//                if (ball.pos.y + ball.radius > 1080){
+//                    ball.pos.y = 1080 - ball.radius +1;
+//                    ball.velocityY = 0;
+//                }
+//                if (ball.pos.y - ball.radius < 0){
+//                    ball.pos.y = ball.radius+1;
+//                    ball.velocityY = 0;
+//                }
 
                 if (ball.pos.x + ball.radius < 2220 && ball.pos.x - ball.radius > 0){
                     ball.pos.x += delta * ball.velocityX;
@@ -75,7 +76,7 @@ public class GameActivity extends AppCompatActivity {
                     ball.velocityX = 0;
                 }
                 if (ball.pos.x - ball.radius < 0){
-                    ball.pos.x = ball.radius;
+                    ball.pos.x = ball.radius +1;
                     ball.velocityX = 0;
                 }
                 postInvalidate(); // Tells our view to redraw itself, since our position changed.
@@ -111,11 +112,6 @@ public class GameActivity extends AppCompatActivity {
             }.start(); // Start THREAD_B
         }
 
-        // Method that's called by the activity
-        public void setActive(boolean active) {
-            this.active = active;
-        }
-
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
@@ -140,7 +136,7 @@ public class GameActivity extends AppCompatActivity {
                         if (ball.touched((int)event.getX(),(int)event.getY())){
                             ball.move((int) event.getX(),(int) event.getY());
                             ball.velocityY = 0;
-                            ball.velocityY =0;
+                            ball.velocityX =0;
                         }
                         break;
                     case MotionEvent.ACTION_UP:
@@ -180,15 +176,15 @@ public class GameActivity extends AppCompatActivity {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             Log.i("TAG", "onFLING wit VX:" + velocityX + " & VY: " + velocityY );
             if (velocityX < -2000 || velocityX > 2000){
-                ball.velocityX = velocityX / 8000.0f;
+                ball.velocityX = velocityX / 4000.0f;
             }else {
-                ball.velocityX = velocityX / 3040.0f;
+                ball.velocityX = velocityX / 1040.0f;
             }
 
             if (velocityY < -2000 || velocityY > 2000){
-                ball.velocityY = velocityY / 2000.0f;
+                ball.velocityY = velocityY / 500.0f;
             }else {
-                ball.velocityY = velocityY / 1000.0f;
+                ball.velocityY = velocityY / 200.0f;
             }
             return false;
         }
@@ -228,13 +224,5 @@ public class GameActivity extends AppCompatActivity {
 
         graphicsView.PhysicsThread();
     }
-
-//    public void onPause() {
-//        super.onPause();
-//        // When our activity pauses, we want our view to stop updating its logic.
-//        // This prevents your application from running in the background, which eats up the battery.
-//        graphicsView.setActive(false);
-//    }
-
 
 }
