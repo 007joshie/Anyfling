@@ -7,6 +7,7 @@ public class Projectile extends Shape{
     int radius;
     float velocityX = 0;
     float velocityY = 0;
+    float bounce = 0.5f;
     boolean selected = false;
 
     int hitbox = 10;
@@ -44,6 +45,22 @@ public class Projectile extends Shape{
         }
         selected = false;
         return false;
+    }
+
+    public Projectile Selected(int px, int py){
+        // get distance between the point and circle's center
+        // using the Pythagorean Theorem
+        int distX = px - pos.x;
+        int distY = py - pos.y;
+        int distance = (int) Math.sqrt( (distX*distX) + (distY*distY) );
+
+
+        // if the distance is less than the circle's
+        // radius the point is inside!
+        if (distance <= radius) {
+            return this;
+        }
+        return null;
     }
 
 
