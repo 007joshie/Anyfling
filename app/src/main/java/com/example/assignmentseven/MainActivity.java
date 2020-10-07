@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickStart(View v){
+
         //Toast.makeText(this, "You pressed my button!", Toast.LENGTH_SHORT).show();
         //create intent to start other activity
         Intent i = new Intent(this, GameActivity.class);

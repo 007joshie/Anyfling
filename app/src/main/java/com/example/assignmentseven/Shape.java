@@ -11,13 +11,11 @@ public abstract class Shape {
     Drawable sprite;
     Paint paint = new Paint(Color.GREEN);
     float rotation;
-    boolean breakable;
 
     public Shape(int _x, int _y, Drawable _sprite){
         pos = new Point(_x,_y);
         sprite = _sprite;
         rotation = 0.0f;
-        breakable = false;
         paint.setColor(Color.GREEN);
     }
 

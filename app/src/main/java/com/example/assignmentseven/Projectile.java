@@ -8,7 +8,10 @@ public class Projectile extends Shape{
     float velocityX = 0;
     float velocityY = 0;
     float bounce = 0.5f;
+
+
     boolean selected = false;
+    boolean thrown = false;
 
     int hitbox = 10;
 
@@ -62,6 +65,8 @@ public class Projectile extends Shape{
         }
         return null;
     }
+
+
 
 
 }

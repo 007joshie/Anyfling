@@ -65,56 +65,58 @@ public class GameActivity extends AppCompatActivity {
         // This just updates our position based on a delta that's given.
         public void update(int delta) {
 
-            for (Projectile projectile: projectiles){
+            for (Projectile projectile : projectiles) {
 
                 //some simple collision code
-                circObstacle.collided(projectile.pos.x,projectile.pos.y,projectile.radius);
-                testRect.collided(projectile.pos.x,projectile.pos.y,projectile.radius);
+                circObstacle.collided(projectile.pos.x, projectile.pos.y, projectile.radius);
+                testRect.collided(projectile.pos.x, projectile.pos.y, projectile.radius);
+
                 //or can be used in IF statement
-                if(target.collided(projectile.pos.x,projectile.pos.y,projectile.radius)){
-                    target.health -=1;
+                if (target.collided(projectile.pos.x, projectile.pos.y, projectile.radius)) {
+                    target.health -= 1;
                 }
                 //or in loop
-                for(RectangleObstacle r:obstacles){
-                    r.collided(projectile.pos.x,projectile.pos.y,projectile.radius);
+                for (RectangleObstacle r : obstacles) {
+                    r.collided(projectile.pos.x, projectile.pos.y, projectile.radius);
                 }
 
 
-            if (!projectile.selected) {
-                if (projectile.pos.y + projectile.radius < 1080) {
+                if (!projectile.selected) {
+                    if (projectile.pos.y + projectile.radius < 1080) {
 
-                    projectile.velocityY = projectile.velocityY + (Forces.Gravity * delta);
-                    projectile.pos.y += (int) projectile.velocityY;
-                }
-                if (projectile.pos.y + projectile.radius > 1080) {
-                    projectile.pos.y = 1080 - projectile.radius - 1;
-                    projectile.velocityY *= -projectile.bounce;
-                }
+                        projectile.velocityY = projectile.velocityY + (Forces.Gravity * delta);
+                        projectile.pos.y += (int) projectile.velocityY;
+                    }
+                    if (projectile.pos.y + projectile.radius > 1080) {
+                        projectile.pos.y = 1080 - projectile.radius - 1;
+                        projectile.velocityY *= -projectile.bounce;
+                    }
 //                if (ball.pos.y - ball.radius < 0){
 //                    ball.pos.y = ball.radius+1;
-//                    ball.velocityY = 0;
+//
+
 //                }
 
-                if (projectile.pos.x + projectile.radius < 2220 && projectile.pos.x - projectile.radius > 0) {
-                    projectile.pos.x += delta * projectile.velocityX;
-                    projectile.velocityX = projectile.velocityX * Forces.Resistance;
+                    if (projectile.pos.x + projectile.radius < 2220 && projectile.pos.x - projectile.radius > 0) {
+                        projectile.pos.x += delta * projectile.velocityX;
+                        projectile.velocityX = projectile.velocityX * Forces.Resistance;
 
+                    }
+                    if (projectile.pos.x + projectile.radius > 2220) {
+                        projectile.pos.x = 2220 - projectile.radius - 1;
+                        projectile.velocityX *= -projectile.bounce;
+                    }
+                    if (projectile.pos.x - projectile.radius < 0) {
+                        projectile.pos.x = projectile.radius + 1;
+                        projectile.velocityX *= -projectile.bounce;
+                    }
+                } else {
                 }
-                if (projectile.pos.x + projectile.radius > 2220) {
-                    projectile.pos.x = 2220 - projectile.radius - 1;
-                    projectile.velocityX *= -projectile.bounce;
-                }
-                if (projectile.pos.x - projectile.radius < 0) {
-                    projectile.pos.x = projectile.radius + 1;
-                    projectile.velocityX *= -projectile.bounce;
-                }
-            } else {
 
+                    postInvalidate(); // Tells our view to redraw itself, since our position changed.
+                }
             }
 
-                postInvalidate(); // Tells our view to redraw itself, since our position changed.
-            }
-        }
 
         // The important part!
         // This starts another thread (let's call this THREAD_B). THREAD_B will run completely
@@ -187,10 +189,6 @@ public class GameActivity extends AppCompatActivity {
                         break;
                     case MotionEvent.ACTION_UP:
                         Log.i("TAG", "Touch UP at " + event.getX() + "," + event.getY());
-                        for (Projectile projectile: projectiles)
-                        {
-                            projectile.selected = false;
-                        }
                         break;
                 }
                 //return true;
@@ -229,16 +227,22 @@ public class GameActivity extends AppCompatActivity {
             // Fix this so the projectile that is selected gets rendered.
             for (Projectile projectile: projectiles)
             {
-                    if (velocityX < -2000 || velocityX > 2000){
-                        projectile.velocityX = velocityX / 3000.0f;
-                    }else {
-                        projectile.velocityX = velocityX / 840.0f;
-                    }
 
-                    if (velocityY < -2000 || velocityY > 2000){
-                        projectile.velocityY = velocityY / 300.0f;
-                    }else {
-                        projectile.velocityY = velocityY / 100.0f;
+                    if (projectile.selected) {
+
+
+                        if (velocityX < -2000 || velocityX > 2000) {
+                            projectile.velocityX = velocityX / 3000.0f;
+                        } else {
+                            projectile.velocityX = velocityX / 840.0f;
+                        }
+
+                        if (velocityY < -2000 || velocityY > 2000) {
+                            projectile.velocityY = velocityY / 300.0f;
+                        } else {
+                            projectile.velocityY = velocityY / 100.0f;
+                        }
+                        //projectile.thrown = true;
                     }
             }
 
