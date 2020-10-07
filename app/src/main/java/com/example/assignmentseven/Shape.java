@@ -20,7 +20,6 @@ public abstract class Shape {
         breakable = false;
         color = new Paint(Color.GREEN);
         color.setColor(Color.GREEN);
-
     }
 
     public abstract void draw(Canvas canvas);

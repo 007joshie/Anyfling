@@ -31,6 +31,7 @@ public class GameActivity extends AppCompatActivity {
 
     Projectile ball = new Projectile(300,300,100);
     Projectile[] projectiles = {ball};
+    RectangleObstacle rectObstacle = new RectangleObstacle(200,200,null,100,100);
 
 
     public class GraphicsView extends View{
@@ -124,6 +125,7 @@ public class GameActivity extends AppCompatActivity {
                 projectile.draw(canvas);
                 debugPosition(projectile.pos.x,projectile.pos.y);
             }
+            rectObstacle.draw(canvas);
             postInvalidate();
 
         }
