@@ -9,7 +9,7 @@ import android.graphics.drawable.Drawable;
 public abstract class Shape {
     Point pos;
     Drawable sprite;
-    Paint color;
+    Paint paint = new Paint(Color.GREEN);
     float rotation;
     boolean breakable;
 
@@ -18,8 +18,7 @@ public abstract class Shape {
         sprite = _sprite;
         rotation = 0.0f;
         breakable = false;
-        color = new Paint(Color.GREEN);
-        color.setColor(Color.GREEN);
+        paint.setColor(Color.GREEN);
     }
 
     public abstract void draw(Canvas canvas);

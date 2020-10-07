@@ -20,6 +20,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameActivity extends AppCompatActivity {
 
     int width = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -31,8 +34,16 @@ public class GameActivity extends AppCompatActivity {
 
     Projectile ball = new Projectile(300,300,100);
     Projectile[] projectiles = {ball};
-    RectangleObstacle rectObstacle = new RectangleObstacle(200,200,null,100,100);
+
+    RectangleObstacle rectObstacle = new RectangleObstacle(1100,300,null,50,300);
+    RectangleObstacle rectObstacle1 = new RectangleObstacle(1300,300,null,50,200);
+    RectangleObstacle rectObstacle2 = new RectangleObstacle(1500,300,null,50,100);
+    RectangleObstacle[] obstacles = {rectObstacle,rectObstacle1,rectObstacle2};
+
+    RectangleObstacle testRect = new RectangleObstacle(1300,600,null,300,300);
+
     CircleObstacle circObstacle = new CircleObstacle(1000,200,null,100);
+    Target target = new Target(500,300,null,70,50);
 
 
 
@@ -55,6 +66,20 @@ public class GameActivity extends AppCompatActivity {
         public void update(int delta) {
 
             for (Projectile projectile: projectiles){
+
+                //some simple collision code
+                circObstacle.collided(projectile.pos.x,projectile.pos.y,projectile.radius);
+                testRect.collided(projectile.pos.x,projectile.pos.y,projectile.radius);
+                //or can be used in IF statement
+                if(target.collided(projectile.pos.x,projectile.pos.y,projectile.radius)){
+                    target.health -=1;
+                }
+                //or in loop
+                for(RectangleObstacle r:obstacles){
+                    r.collided(projectile.pos.x,projectile.pos.y,projectile.radius);
+                }
+
+
             if (!projectile.selected) {
                 if (projectile.pos.y + projectile.radius < 1080) {
 
@@ -127,8 +152,13 @@ public class GameActivity extends AppCompatActivity {
                 projectile.draw(canvas);
                 debugPosition(projectile.pos.x,projectile.pos.y);
             }
-            rectObstacle.draw(canvas);
+
+            for(RectangleObstacle r:obstacles){
+                r.draw(canvas);
+            }
             circObstacle.draw(canvas);
+            target.draw(canvas);
+            testRect.draw(canvas);
             postInvalidate();
 
         }

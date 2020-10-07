@@ -20,7 +20,7 @@ public class Projectile extends Shape{
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawCircle(pos.x,pos.y,radius,color);
+        canvas.drawCircle(pos.x,pos.y,radius,paint);
     }
 
     @Override
