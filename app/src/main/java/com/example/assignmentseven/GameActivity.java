@@ -93,8 +93,6 @@ public class GameActivity extends AppCompatActivity {
                     }
 //                if (ball.pos.y - ball.radius < 0){
 //                    ball.pos.y = ball.radius+1;
-//
-
 //                }
 
                     if (projectile.pos.x + projectile.radius < 2220 && projectile.pos.x - projectile.radius > 0) {
@@ -189,6 +187,10 @@ public class GameActivity extends AppCompatActivity {
                         break;
                     case MotionEvent.ACTION_UP:
                         Log.i("TAG", "Touch UP at " + event.getX() + "," + event.getY());
+                        for (Projectile projectile: projectiles)
+                        {
+                            projectile.selected = false;
+                        }
                         break;
                 }
                 //return true;
@@ -228,9 +230,6 @@ public class GameActivity extends AppCompatActivity {
             for (Projectile projectile: projectiles)
             {
 
-                    if (projectile.selected) {
-
-
                         if (velocityX < -2000 || velocityX > 2000) {
                             projectile.velocityX = velocityX / 3000.0f;
                         } else {
@@ -243,7 +242,6 @@ public class GameActivity extends AppCompatActivity {
                             projectile.velocityY = velocityY / 100.0f;
                         }
                         //projectile.thrown = true;
-                    }
             }
 
             return false;
