@@ -15,9 +15,6 @@ public abstract class Obstacle extends Shape{
     public void isDestroyable(boolean value){
         breakable = value;
     }
-    public void isMoving(boolean value){
-        mover = value;
-    }
-
+    public void isMoving(boolean value){ mover = value; }
     public abstract boolean collided(int x, int y, int radius);
 }

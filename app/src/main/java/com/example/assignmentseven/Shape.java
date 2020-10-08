@@ -21,4 +21,7 @@ public abstract class Shape {
 
     public abstract void draw(Canvas canvas);
     public abstract void move(int dx, int dy);
+    public boolean collided(int x, int y, int radius) {
+        return false;
+    }
 }
