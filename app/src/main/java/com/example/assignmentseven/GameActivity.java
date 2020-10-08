@@ -40,7 +40,7 @@ public class GameActivity extends AppCompatActivity {
     //Holds all the levels
     Level[] levels;
     //current level number 0 1 or 2
-    int lvlNum = 1;
+    int lvlNum = 2;
 
     public class GraphicsView extends View{
         private GestureDetector gestureDetector;
@@ -268,9 +268,9 @@ public class GameActivity extends AppCompatActivity {
         Level l1 = new Level(is, 1);
         is = getResources().openRawResource(R.raw.level2);
         Level l2 = new Level(is, 2);
-        //is = getResources().openRawResource(R.raw.level3);
-        //Level l3 = new Level(is, 3);
-        levels = new Level[]{l1,l2};
+        is = getResources().openRawResource(R.raw.level3);
+        Level l3 = new Level(is, 3);
+        levels = new Level[]{l1,l2,l3};
     }
 
 }
