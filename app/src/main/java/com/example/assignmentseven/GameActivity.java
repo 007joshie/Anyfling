@@ -40,7 +40,7 @@ public class GameActivity extends AppCompatActivity {
     //Holds all the levels
     Level[] levels;
     //current level number 0 1 or 2
-    int lvlNum = 2;
+    int lvlNum =2;
 
     public class GraphicsView extends View{
         private GestureDetector gestureDetector;
@@ -83,21 +83,36 @@ public class GameActivity extends AppCompatActivity {
 
 
                     if (collision != null) {
-                        Log.i("TAG", "Collision at" + collision.pos.x + "    " + collision.pos.y);
-                        if (projectile.pos.x < collision.pos.x) {
-                            projectile.velocityX *= -projectile.bounce;                         // left edge
-                        }
-                         if (projectile.pos.x > collision.pos.x + collision.getWidth()) {
-                            projectile.velocityX *= -projectile.bounce;       // right edge
-                        }
 
-                         if (projectile.pos.y > collision.pos.y + collision.getHeight()) {
-                            projectile.pos.y = collision.pos.y + collision.getHeight() + projectile.radius  ;
-                             projectile.velocityY *= -projectile.bounce;     // bottom edge
-                        }
-                         if (projectile.pos.y < collision.pos.y){
-                            projectile.pos.y = collision.pos.y - projectile.radius ;
-                            projectile.velocityY *= -projectile.bounce;                        // top edge
+                        if (collision instanceof RectangleObstacle) {
+                            if (projectile.pos.x < collision.pos.x) {
+                                projectile.velocityX *= -projectile.bounce;                         // left edge
+                            }
+                            if (projectile.pos.x > collision.pos.x + collision.getWidth()) {
+                                projectile.velocityX *= -projectile.bounce;       // right edge
+                            }
+
+                            if (projectile.pos.y > collision.pos.y + collision.getHeight()) {
+                                projectile.pos.y = collision.pos.y + collision.getHeight() + projectile.radius;
+                                projectile.velocityY *= -projectile.bounce;     // bottom edge
+                            }
+                            if (projectile.pos.y < collision.pos.y) {
+                                projectile.pos.y = collision.pos.y - projectile.radius;
+                                projectile.velocityY *= -projectile.bounce;                        // top edge
+                            }
+                        } else if (collision instanceof CircleObstacle) {
+                            Log.i("TAG", "Circle Collision at" + collision.pos.x + "    " + collision.pos.y);
+                            if (projectile.pos.y < collision.pos.y){
+                                projectile.pos.y = collision.pos.y- collision.getHeight() - projectile.radius;
+                            } else {
+                                projectile.pos.y = collision.pos.y+ collision.getHeight() + projectile.radius;
+                            }
+                            projectile.velocityY *= -projectile.bounce;
+                            if (projectile.pos.x > collision.pos.x){
+                                projectile.velocityX *= -projectile.bounce- 1f;
+                            } else {
+                                projectile.velocityX *= -projectile.bounce + 1f;
+                            }
                         }
 
                     }
@@ -118,9 +133,9 @@ public class GameActivity extends AppCompatActivity {
                 } else {
                 }
 
-                    postInvalidate(); // Tells our view to redraw itself, since our position changed.
-                }
+                postInvalidate(); // Tells our view to redraw itself, since our position changed.
             }
+        }
 
 
         // The important part!
@@ -233,7 +248,7 @@ public class GameActivity extends AppCompatActivity {
                 projectile.selected = false;
                 if (projectile.SwipeIntersect(e2)) {
                     if (velocityX < -2000 || velocityX > 2000) {
-                        projectile.velocityX = velocityX / 3000.0f;
+                        projectile.velocityX = velocityX / 2400.0f;
                     } else {
                         projectile.velocityX = velocityX / 840.0f;
                     }
