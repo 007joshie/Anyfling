@@ -53,16 +53,21 @@ public class GameActivity extends AppCompatActivity {
             paint.setColor(getColor(R.color.colorPrimary));
         }
 
-        private float velocity; // How fast the dot's moving
-
         private boolean active; // If our logic is still active
 
         // This just updates our position based on a delta that's given.
         public void update(int delta) {
 
             for (Projectile projectile : projectiles) {
-                levels[lvlNum].TestCollisions(projectile.pos.x,projectile.pos.y,projectile.radius);
+                //levels[lvlNum].TestCollisions(projectile.pos.x,projectile.pos.y,projectile.radius);
+                Obstacle collision = levels[lvlNum].getCollision(projectile);
+
+
                 if (!projectile.selected) {
+
+                    if (projectile.velocityX < 0.05f && projectile.velocityX > 0 || projectile.velocityX > -0.05f && projectile.velocityX < 0){
+                        projectile.velocityX = 0;
+                    }
                     if (projectile.pos.y + projectile.radius < 1080) {
 
                         projectile.velocityY = projectile.velocityY + (Forces.Gravity * delta);
@@ -75,6 +80,27 @@ public class GameActivity extends AppCompatActivity {
 //                if (ball.pos.y - ball.radius < 0){
 //                    ball.pos.y = ball.radius+1;
 //                }
+
+
+                    if (collision != null) {
+                        Log.i("TAG", "Collision at" + collision.pos.x + "    " + collision.pos.y);
+                        if (projectile.pos.x < collision.pos.x) {
+                            projectile.velocityX *= -projectile.bounce;                         // left edge
+                        }
+                         if (projectile.pos.x > collision.pos.x + collision.getWidth()) {
+                            projectile.velocityX *= -projectile.bounce;       // right edge
+                        }
+
+                         if (projectile.pos.y > collision.pos.y + collision.getHeight()) {
+                            projectile.pos.y = collision.pos.y + collision.getHeight() + projectile.radius  ;
+                             projectile.velocityY *= -projectile.bounce;     // bottom edge
+                        }
+                         if (projectile.pos.y < collision.pos.y){
+                            projectile.pos.y = collision.pos.y - projectile.radius ;
+                            projectile.velocityY *= -projectile.bounce;                        // top edge
+                        }
+
+                    }
 
                     if (projectile.pos.x + projectile.radius < 2220 && projectile.pos.x - projectile.radius > 0) {
                         projectile.pos.x += delta * projectile.velocityX;
@@ -204,19 +230,21 @@ public class GameActivity extends AppCompatActivity {
             // Fix this so the projectile that is selected gets rendered.
             for (Projectile projectile: projectiles)
             {
+                projectile.selected = false;
+                if (projectile.SwipeIntersect(e2)) {
+                    if (velocityX < -2000 || velocityX > 2000) {
+                        projectile.velocityX = velocityX / 3000.0f;
+                    } else {
+                        projectile.velocityX = velocityX / 840.0f;
+                    }
 
-                        if (velocityX < -2000 || velocityX > 2000) {
-                            projectile.velocityX = velocityX / 3000.0f;
-                        } else {
-                            projectile.velocityX = velocityX / 840.0f;
-                        }
-
-                        if (velocityY < -2000 || velocityY > 2000) {
-                            projectile.velocityY = velocityY / 300.0f;
-                        } else {
-                            projectile.velocityY = velocityY / 100.0f;
-                        }
-                        //projectile.thrown = true;
+                    if (velocityY < -2000 || velocityY > 2000) {
+                        projectile.velocityY = velocityY / 300.0f;
+                    } else {
+                        projectile.velocityY = velocityY / 100.0f;
+                    }
+                    //projectile.thrown = true;
+                }
             }
 
             return false;

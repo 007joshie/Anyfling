@@ -17,4 +17,7 @@ public abstract class Obstacle extends Shape{
     }
     public void isMoving(boolean value){ mover = value; }
     public abstract boolean collided(int x, int y, int radius);
+
+    public abstract int getHeight();
+    public abstract int getWidth();
 }

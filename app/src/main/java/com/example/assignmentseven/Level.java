@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Level {
 
-    List<Obstacle> obstacles;
+    public List<Obstacle> obstacles;
     int number;
 
 
@@ -58,6 +58,7 @@ public class Level {
         }
     }
 
+
     public boolean TestCollisions(int x, int y, int r){
         boolean occurance = false;
         for(Obstacle o : obstacles){
@@ -66,4 +67,14 @@ public class Level {
         }
         return occurance;
     }
+
+    public Obstacle getCollision(Projectile p){
+        for(Obstacle o : obstacles){
+            if (o.collided(p.pos.x,p.pos.y,p.radius)){
+                return o;
+            }
+        }
+        return null;
+    }
+
 }

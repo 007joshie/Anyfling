@@ -1,6 +1,9 @@
 package com.example.assignmentseven;
 
 import android.graphics.Canvas;
+import android.view.MotionEvent;
+
+import static java.lang.Math.pow;
 
 public class Projectile extends Shape{
     int speedMod;
@@ -13,7 +16,9 @@ public class Projectile extends Shape{
     boolean selected = false;
     boolean thrown = false;
 
-    int hitbox = 10;
+    int hitboxTouch = 50;
+
+    int hitboxSwipe = 100;
 
     public Projectile(int _startX, int _startY, int _radius){
         super(_startX,_startY,null);
@@ -42,11 +47,11 @@ public class Projectile extends Shape{
 
         // if the distance is less than the circle's
         // radius the point is inside!
-        if (distance <= radius) {
-            selected = true;
+        if (distance <= radius + hitboxTouch) {
+            //selected = true;
             return true;
         }
-        selected = false;
+        //selected = false;
         return false;
     }
 
@@ -66,6 +71,21 @@ public class Projectile extends Shape{
         return null;
     }
 
+    public Boolean SwipeIntersect(MotionEvent e){
+        // get distance between the point and circle's center
+        // using the Pythagorean Theorem
+        int distX = (int) e.getX() - pos.x;
+        int distY = (int) e.getY() - pos.y;
+        int distance = (int) Math.sqrt( (distX*distX) + (distY*distY) );
+
+
+        // if the distance is less than the circle's
+        // radius the point is inside!
+        if (distance <= (600)) {
+            return true;
+        }
+        return false;
+    }
 
 
 

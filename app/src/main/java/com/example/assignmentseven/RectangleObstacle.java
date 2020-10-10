@@ -7,8 +7,8 @@ import android.graphics.drawable.Drawable;
 
 public class RectangleObstacle extends Obstacle{
 
-    int width;
-    int height;
+    public int width;
+    public int height;
 
     public RectangleObstacle(int _x, int _y, Drawable _sprite, int _width, int _height) {
         super(_x, _y, _sprite);
@@ -51,5 +51,15 @@ public class RectangleObstacle extends Obstacle{
             paint.setColor(Color.GREEN);
             return false;
         }
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
     }
 }

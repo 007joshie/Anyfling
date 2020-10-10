@@ -13,6 +13,11 @@ public class CircleObstacle extends Obstacle{
         radius = _radius;
     }
 
+    @Override
+    public int getWidth() {
+        return radius*2;
+    }
+
 
         @Override
     public void draw(Canvas canvas) {
@@ -22,6 +27,11 @@ public class CircleObstacle extends Obstacle{
     @Override
     public void move(int dx, int dy) {
 
+    }
+
+    @Override
+    public int getHeight() {
+        return radius*2;
     }
 
     @Override
