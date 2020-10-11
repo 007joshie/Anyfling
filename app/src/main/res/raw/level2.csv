@@ -1,6 +1,6 @@
 rect,1000,300,null,50,300
 circ,1200,300,null,50
 targ,1400,300,null,50,150
-circ,1500,600,null,300
+circ,1500,600,null,100
 rect,1000,200,null,100,10
 targ,100,700,null,70,50

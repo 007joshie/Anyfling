@@ -40,7 +40,7 @@ public class GameActivity extends AppCompatActivity {
     //Holds all the levels
     Level[] levels;
     //current level number 0 1 or 2
-    int lvlNum =2;
+    int lvlNum =1;
 
     public class GraphicsView extends View{
         private GestureDetector gestureDetector;
@@ -85,11 +85,17 @@ public class GameActivity extends AppCompatActivity {
                     if (collision != null) {
 
                         if (collision instanceof RectangleObstacle) {
-                            if (projectile.pos.x < collision.pos.x) {
+                            if (projectile.pos.x < collision.pos.x + 5) {
+                                if (projectile.velocityX == 0 && projectile.velocityY > 0.5){
+                                    projectile.velocityX += 0.2f;
+                                }
                                 projectile.velocityX *= -projectile.bounce;                         // left edge
                             }
-                            if (projectile.pos.x > collision.pos.x + collision.getWidth()) {
+                            if (projectile.pos.x > collision.pos.x + collision.getWidth() - 5) {
                                 projectile.velocityX *= -projectile.bounce;       // right edge
+                                if (projectile.velocityX == 0 && projectile.velocityY > 0.5){
+                                    projectile.velocityX += 0.2f;
+                                }
                             }
 
                             if (projectile.pos.y > collision.pos.y + collision.getHeight()) {
@@ -101,17 +107,43 @@ public class GameActivity extends AppCompatActivity {
                                 projectile.velocityY *= -projectile.bounce;                        // top edge
                             }
                         } else if (collision instanceof CircleObstacle) {
+
+                            int collisionPointX =
+                                    ((projectile.pos.x * ((CircleObstacle)collision).radius) + (collision.pos.x * projectile.radius))
+                                            / (projectile.radius + ((CircleObstacle)collision).radius);
+
+                            int collisionPointY = ((projectile.pos.y * ((CircleObstacle)collision).radius) + (collision.pos.y * projectile.radius)) / (projectile.radius + ((CircleObstacle)collision).radius);
+
+                            //newVelX1 = (firstBall.speed.x * (firstBall.mass – secondBall.mass) + (2 * secondBall.mass * secondBall.speed.x)) / (firstBall.mass + secondBall.mass);
+                            //newVelY1 = (firstBall.speed.y * (firstBall.mass – secondBall.mass) + (2 * secondBall.mass * secondBall.speed.y)) / (firstBall.mass + secondBall.mass);
+
+
                             Log.i("TAG", "Circle Collision at" + collision.pos.x + "    " + collision.pos.y);
-                            if (projectile.pos.y < collision.pos.y){
-                                projectile.pos.y = collision.pos.y- collision.getHeight() - projectile.radius;
-                            } else {
-                                projectile.pos.y = collision.pos.y+ collision.getHeight() + projectile.radius;
-                            }
-                            projectile.velocityY *= -projectile.bounce;
-                            if (projectile.pos.x > collision.pos.x){
-                                projectile.velocityX *= -projectile.bounce- 1f;
-                            } else {
-                                projectile.velocityX *= -projectile.bounce + 1f;
+//                            if (projectile.pos.y < collision.pos.y){
+//                                //projectile.pos.y = collision.pos.y- collision.getHeight() - projectile.radius;
+//                                projectile.velocityY *= -projectile.bounce;
+//                            } else {
+//                               // projectile.pos.y = collision.pos.y+ collision.getHeight() + projectile.radius;
+//                                projectile.velocityY *= -projectile.bounce;
+//                            }
+//                            projectile.velocityY *= -projectile.bounce;
+//                            if (projectile.pos.x > collision.pos.x && projectile.velocityX == 0){
+//                                projectile.velocityX += -2f;
+//                            } if (projectile.pos.x < collision.pos.x && projectile.velocityX == 0) {
+//                                projectile.velocityX += 2f;
+//                            } if (projectile.pos.x == collision.pos.x && projectile.velocityX == 0) {
+//
+//                                // If bounced directly ontop of ball
+//
+//                                // Add random amount
+//                                projectile.velocityX *= -projectile.bounce;
+//                            }else {
+//                                projectile.velocityX *= -projectile.bounce;
+//                            }
+                        } if (collision instanceof Target) {
+                            ((Target) collision).health -= Math.abs(projectile.velocityY + projectile.velocityY);
+                            if (((Target) collision).health <= 0) {
+                                ((Target) collision).destroyed = true;
                             }
                         }
 
@@ -130,7 +162,6 @@ public class GameActivity extends AppCompatActivity {
                         projectile.pos.x = projectile.radius + 1;
                         projectile.velocityX *= -projectile.bounce;
                     }
-                } else {
                 }
 
                 postInvalidate(); // Tells our view to redraw itself, since our position changed.
