@@ -77,4 +77,8 @@ public class Level {
         return null;
     }
 
+    public void addObject(Obstacle o){
+        obstacles.add(o);
+    }
+
 }

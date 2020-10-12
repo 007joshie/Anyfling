@@ -37,10 +37,16 @@ public class GameActivity extends AppCompatActivity {
     Projectile ball = new Projectile(300,300,100);
     Projectile[] projectiles = {ball};
 
+
+
     //Holds all the levels
     Level[] levels;
     //current level number 0 1 or 2
-    int lvlNum =1;
+    int lvlNum = 0;
+
+    Portal p = new Portal(100,100,null,40);
+    Portal p1 = new Portal(1000,100,null,40);
+
 
     public class GraphicsView extends View{
         private GestureDetector gestureDetector;
@@ -145,6 +151,8 @@ public class GameActivity extends AppCompatActivity {
                             if (((Target) collision).health <= 0) {
                                 ((Target) collision).destroyed = true;
                             }
+                        } if (collision instanceof Portal){
+                            projectile.move(((Portal) collision).linked.pos.x,((Portal) collision).linked.pos.y);
                         }
 
                     }
@@ -163,6 +171,7 @@ public class GameActivity extends AppCompatActivity {
                         projectile.velocityX *= -projectile.bounce;
                     }
                 }
+                else {/*?*/}
 
                 postInvalidate(); // Tells our view to redraw itself, since our position changed.
             }
@@ -325,11 +334,15 @@ public class GameActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(),"Version Number: " + version,Toast.LENGTH_SHORT).show();
         //Get all the levels from CSV files
+        p.setLinked(p1);
+
         try {
             loadLevels();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        levels[0].addObject(p);
+        levels[0].addObject(p1);
         GraphicsView graphicsView = new GraphicsView(this);
         ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.c1_game);
         constraintLayout.addView(graphicsView);

@@ -19,7 +19,7 @@ public class CircleObstacle extends Obstacle{
     }
 
 
-        @Override
+    @Override
     public void draw(Canvas canvas) {
         canvas.drawCircle(pos.x,pos.y,radius,paint);
     }
