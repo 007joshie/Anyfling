@@ -1,5 +1,6 @@
 package com.example.assignmentseven;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 
@@ -11,7 +12,6 @@ public class Portal extends CircleObstacle {
 
     public Portal(int _x, int _y, Drawable _sprite, int _radius) {
         super(_x, _y, _sprite, _radius);
-        paint.setColor(Color.YELLOW);
         out = false;
     }
 
@@ -22,7 +22,13 @@ public class Portal extends CircleObstacle {
     public void setLinked(Portal p){
         linked = p;
         linked.paint.setColor(Color.BLUE);
+        paint.setColor(Color.YELLOW);
         linked.out = true;
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        canvas.drawCircle(pos.x,pos.y,radius*2,paint);
     }
 
     @Override
@@ -34,7 +40,7 @@ public class Portal extends CircleObstacle {
             int dx = pos.x - x;
             int dy = pos.y - y;
             float distance = (float) Math.sqrt((dx * dx) + (dy * dy));
-            return distance < (radius/2) + rad;
+            return distance < radius + rad;
         }
     }
 }

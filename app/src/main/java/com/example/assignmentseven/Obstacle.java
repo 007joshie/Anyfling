@@ -7,6 +7,10 @@ public abstract class Obstacle extends Shape{
 
     boolean breakable; //can obj be broken
     boolean mover; //does the object move
+    int xMoveSpeed;
+    int yMoveSpeed;
+    int xBound;
+    int yBound;
 
     public Obstacle(int _x, int _y, Drawable _sprite) {
         super(_x, _y, _sprite);

@@ -1,6 +1,7 @@
 package com.example.assignmentseven;
 
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.renderscript.ScriptGroup;
 import android.util.Log;
 
@@ -18,12 +19,12 @@ public class Level {
 
     public List<Obstacle> obstacles;
     int number;
+    String name;
+    Point startPos;
+    int targets;
 
-
-
-    public Level(InputStream is, int lvlNum) throws IOException {
+    public Level(InputStream is) throws IOException {
         obstacles = new ArrayList<Obstacle>();
-        number = lvlNum;
         BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 
         String line;
@@ -36,19 +37,43 @@ public class Level {
             //Read data
             switch (token[0]) {
                 case "rect":
-                    o = new RectangleObstacle(Integer.parseInt(token[1]), Integer.parseInt(token[2]), null, Integer.parseInt(token[4]), Integer.parseInt(token[5]));
-                    obstacles.add(o);
-                    break;
-                case "circ":
-                    o = new CircleObstacle(Integer.parseInt(token[1]), Integer.parseInt(token[2]), null, Integer.parseInt(token[4]));
+                    if(token.length == 10){
+                        o = new RectangleObstacle(Integer.parseInt(token[1])
+                                ,Integer.parseInt(token[2])
+                                ,null
+                                ,Integer.parseInt(token[4])
+                                ,Integer.parseInt(token[5])
+                                ,Integer.parseInt(token[6])
+                                ,Integer.parseInt(token[7])
+                                ,Integer.parseInt(token[8])
+                                ,Integer.parseInt(token[9]));
+
+                    }
+                    else{ o = new RectangleObstacle(Integer.parseInt(token[1]), Integer.parseInt(token[2]), null, Integer.parseInt(token[4]), Integer.parseInt(token[5])); }
                     obstacles.add(o);
                     break;
                 case "targ":
                     o = new Target(Integer.parseInt(token[1]), Integer.parseInt(token[2]), null, Integer.parseInt(token[4]), Integer.parseInt(token[5]));
                     obstacles.add(o);
+                    targets++;
+                    break;
+                case "port":
+                    o = new Portal(Integer.parseInt(token[1]), Integer.parseInt(token[2]), null, Integer.parseInt(token[4]));
+                    Portal link = new Portal(Integer.parseInt(token[5]), Integer.parseInt(token[6]), null, Integer.parseInt(token[8]));
+                    ((Portal)o).setLinked(link);
+                    obstacles.add(o);
+                    obstacles.add(link);
+                    break;
+                case "boos":
+                    o = new Booster(Integer.parseInt(token[1]), Integer.parseInt(token[2]), null, Integer.parseInt(token[4]),Integer.parseInt(token[5]));
+                    obstacles.add(o);
+                    break;
+                case "meta":
+                    startPos = new Point(Integer.parseInt(token[1]), Integer.parseInt(token[2]));
+                    name = token[3];
+                    number = Integer.parseInt(token[4]);
                     break;
             }
-
         }
     }
 
@@ -79,6 +104,14 @@ public class Level {
 
     public void addObject(Obstacle o){
         obstacles.add(o);
+    }
+
+    public void reset(){
+        for(Obstacle o : obstacles){
+            if(o instanceof Target){
+                ((Target) o).destroyed = false;
+            }
+        }
     }
 
 }

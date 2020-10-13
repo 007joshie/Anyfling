@@ -1,6 +1,5 @@
-rect,1000,300,null,50,300
-circ,1200,300,null,50
-targ,1400,300,null,50,150
-circ,1500,600,null,100
-rect,1000,200,null,100,10
-targ,100,700,null,70,50
+targ,2120,400,null,100,100
+rect,0,0,null,2220,50
+rect,1800,500,null,500,100
+rect,1600,0,null,40,400,0,3,0,680
+meta,300,300,That thing is Moving!,2

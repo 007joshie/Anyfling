@@ -9,14 +9,14 @@ import android.graphics.drawable.Drawable;
 public abstract class Shape {
     Point pos;
     Drawable sprite;
-    Paint paint = new Paint(Color.GREEN);
+    Paint paint = new Paint();
     float rotation;
 
     public Shape(int _x, int _y, Drawable _sprite){
         pos = new Point(_x,_y);
         sprite = _sprite;
         rotation = 0.0f;
-        paint.setColor(Color.RED);
+        paint.setColor(Color.GREEN);
     }
 
     public abstract void draw(Canvas canvas);

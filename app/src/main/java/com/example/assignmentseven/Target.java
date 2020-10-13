@@ -13,6 +13,8 @@ public class Target extends CircleObstacle {
     public Target(int _x, int _y, Drawable _sprite, int _radius, int _health) {
         super(_x, _y, _sprite, _radius);
         health = _health;
+        paint.setColor(Color.CYAN);
+
     }
 
     @Override
@@ -23,12 +25,22 @@ public class Target extends CircleObstacle {
             paint.setTextSize(35);
             paint.setColor(Color.BLACK);
             canvas.drawText(String.valueOf(health), pos.x, pos.y, paint);
-            paint.setColor(Color.GREEN);
+            paint.setColor(Color.CYAN);
         }
         else {
             this.pos.x = -500;
             this.pos.y = -500;
         }
+    }
+
+    @Override
+    public boolean collided(int x, int y, int rad) {
+        int dx = pos.x-x;
+        int dy = pos.y-y;
+        float distance = (float) Math.sqrt((dx*dx) + (dy*dy));
+        //paint.setColor(Color.RED);
+        //paint.setColor(Color.GREEN);
+        return distance < radius + rad;
     }
 
 }

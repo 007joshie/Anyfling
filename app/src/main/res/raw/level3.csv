@@ -1,7 +1,7 @@
-rect,100,300,null,100,100
-rect,250,300,null,100,100
-rect,400,300,null,100,100
-rect,550,300,null,100,100
-rect,700,300,null,100,100
-rect,850,300,null,100,100
-rect,1000,300,null,100,100
+port,1600,200,null,40,2050,200,null,40
+rect,1800,-1080,null,50,2160
+rect,650,0,null,50,540
+targ,2050,800,null,150,100
+rect,1110,400,null,690,680
+boos,850,800,null,100,3
+meta,300,300,Thinking with Portals,3

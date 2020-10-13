@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -33,6 +34,9 @@ public class GameActivity extends AppCompatActivity {
     int startWidth = height/2;
     int startHeight = width/2;
     boolean enabled = true;
+    boolean fullThrow = false;
+    float dx = 0;
+    float dy = 0;
 
     Projectile ball = new Projectile(300,300,100);
     Projectile[] projectiles = {ball};
@@ -43,9 +47,6 @@ public class GameActivity extends AppCompatActivity {
     Level[] levels;
     //current level number 0 1 or 2
     int lvlNum = 0;
-
-    Portal p = new Portal(100,100,null,40);
-    Portal p1 = new Portal(1000,100,null,40);
 
 
     public class GraphicsView extends View{
@@ -63,7 +64,9 @@ public class GameActivity extends AppCompatActivity {
 
         // This just updates our position based on a delta that's given.
         public void update(int delta) {
-
+            for(Obstacle o : levels[lvlNum].obstacles){
+                o.move(0,0);
+            }
             for (Projectile projectile : projectiles) {
                 //levels[lvlNum].TestCollisions(projectile.pos.x,projectile.pos.y,projectile.radius);
                 Obstacle collision = levels[lvlNum].getCollision(projectile);
@@ -112,19 +115,8 @@ public class GameActivity extends AppCompatActivity {
                                 projectile.pos.y = collision.pos.y - projectile.radius;
                                 projectile.velocityY *= -projectile.bounce;                        // top edge
                             }
-                        } else if (collision instanceof CircleObstacle) {
-
-                            int collisionPointX =
-                                    ((projectile.pos.x * ((CircleObstacle)collision).radius) + (collision.pos.x * projectile.radius))
-                                            / (projectile.radius + ((CircleObstacle)collision).radius);
-
-                            int collisionPointY = ((projectile.pos.y * ((CircleObstacle)collision).radius) + (collision.pos.y * projectile.radius)) / (projectile.radius + ((CircleObstacle)collision).radius);
-
-                            //newVelX1 = (firstBall.speed.x * (firstBall.mass – secondBall.mass) + (2 * secondBall.mass * secondBall.speed.x)) / (firstBall.mass + secondBall.mass);
-                            //newVelY1 = (firstBall.speed.y * (firstBall.mass – secondBall.mass) + (2 * secondBall.mass * secondBall.speed.y)) / (firstBall.mass + secondBall.mass);
-
-
-                            Log.i("TAG", "Circle Collision at" + collision.pos.x + "    " + collision.pos.y);
+                        }
+//                            Log.i("TAG", "Circle Collision at" + collision.pos.x + "    " + collision.pos.y);
 //                            if (projectile.pos.y < collision.pos.y){
 //                                //projectile.pos.y = collision.pos.y- collision.getHeight() - projectile.radius;
 //                                projectile.velocityY *= -projectile.bounce;
@@ -146,13 +138,17 @@ public class GameActivity extends AppCompatActivity {
 //                            }else {
 //                                projectile.velocityX *= -projectile.bounce;
 //                            }
-                        } if (collision instanceof Target) {
+                        if (collision instanceof Target) {
                             ((Target) collision).health -= Math.abs(projectile.velocityY + projectile.velocityY);
                             if (((Target) collision).health <= 0) {
                                 ((Target) collision).destroyed = true;
                             }
-                        } if (collision instanceof Portal){
+                        }
+                        if (collision instanceof Portal){
                             projectile.move(((Portal) collision).linked.pos.x,((Portal) collision).linked.pos.y);
+                        }
+                        if(collision instanceof  Booster){
+                            projectile.velocityY-=((Booster)collision).strength;
                         }
 
                     }
@@ -172,7 +168,19 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 else {/*?*/}
-
+                if(projectile.thrown){
+                    if(projectile.velocityX == dx && projectile.velocityY == dy){
+                        fullThrow = true;
+                    }
+                    else{
+                        dx = projectile.velocityX;
+                        dy = projectile.velocityY;
+                    }
+                }
+                if(fullThrow){
+                    //Comment this out to stop the program from changing levels
+                    nextLevel();
+                }
                 postInvalidate(); // Tells our view to redraw itself, since our position changed.
             }
         }
@@ -298,10 +306,9 @@ public class GameActivity extends AppCompatActivity {
                     } else {
                         projectile.velocityY = velocityY / 100.0f;
                     }
-                    //projectile.thrown = true;
+                    projectile.thrown = true;
                 }
             }
-
             return false;
         }
     }
@@ -334,15 +341,12 @@ public class GameActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(),"Version Number: " + version,Toast.LENGTH_SHORT).show();
         //Get all the levels from CSV files
-        p.setLinked(p1);
 
         try {
             loadLevels();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        levels[0].addObject(p);
-        levels[0].addObject(p1);
         GraphicsView graphicsView = new GraphicsView(this);
         ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.c1_game);
         constraintLayout.addView(graphicsView);
@@ -352,12 +356,45 @@ public class GameActivity extends AppCompatActivity {
 
     private void loadLevels() throws IOException {
         InputStream is = getResources().openRawResource(R.raw.level1);
-        Level l1 = new Level(is, 1);
+        Level l1 = new Level(is);
         is = getResources().openRawResource(R.raw.level2);
-        Level l2 = new Level(is, 2);
+        Level l2 = new Level(is);
         is = getResources().openRawResource(R.raw.level3);
-        Level l3 = new Level(is, 3);
-        levels = new Level[]{l1,l2,l3};
+        Level l3 = new Level(is);
+        is = getResources().openRawResource(R.raw.level4);
+        Level l4 = new Level(is);
+        is = getResources().openRawResource(R.raw.level5);
+        Level l5 = new Level(is);
+        levels = new Level[]{l1,l2,l3,l4,l5};
     }
 
+    private void nextLevel(){
+        SystemClock.sleep(1000);
+        if(lvlNum < levels.length-1) {
+            lvlNum++;
+            projectiles[0].thrown = false;
+            fullThrow = false;
+            dx = 0;
+            dy = 0;
+            projectiles[0].pos = levels[lvlNum].startPos;
+            projectiles[0].velocityY = 0;
+            projectiles[0].velocityX = 0;
+            levels[lvlNum].reset();
+
+        }
+        else{
+            //MOVE ONTO SCOREBOARD ACTIVITY INSTEAD OF RESET LEVEL CODE
+
+            //reset levels
+            lvlNum = 0;
+            projectiles[0].thrown = false;
+            fullThrow = false;
+            dx = 0;
+            dy = 0;
+            projectiles[0].velocityY = 0;
+            projectiles[0].velocityX = 0;
+            projectiles[0].pos = levels[lvlNum].startPos;
+            levels[lvlNum].reset();
+        }
+    }
 }

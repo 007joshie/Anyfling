@@ -81,7 +81,7 @@ public class Projectile extends Shape{
 
         // if the distance is less than the circle's
         // radius the point is inside!
-        if (distance <= (600)) {
+        if (distance <= (1200)) {
             return true;
         }
         return false;
