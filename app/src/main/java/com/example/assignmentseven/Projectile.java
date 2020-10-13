@@ -10,7 +10,7 @@ public class Projectile extends Shape{
     int radius;
     float velocityX = 0;
     float velocityY = 0;
-    float bounce = 0.5f;
+    float bounce = 0.6f;
 
 
     boolean selected = false;

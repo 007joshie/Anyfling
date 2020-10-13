@@ -52,37 +52,57 @@ public class GameActivity extends AppCompatActivity {
     public class GraphicsView extends View{
         private GestureDetector gestureDetector;
         Paint paint = new Paint();
+        public boolean active; // If our logic is still active
 
         public GraphicsView(Context context){
             super(context);
             active = true;
             gestureDetector = new GestureDetector(context, new MyGestureListener());
             paint.setColor(getColor(R.color.colorPrimary));
+            paint.setStrokeWidth(12);
         }
-
-        private boolean active; // If our logic is still active
 
         // This just updates our position based on a delta that's given.
         public void update(int delta) {
             for(Obstacle o : levels[lvlNum].obstacles){
                 o.move(0,0);
             }
+
             for (Projectile projectile : projectiles) {
                 //levels[lvlNum].TestCollisions(projectile.pos.x,projectile.pos.y,projectile.radius);
                 Obstacle collision = levels[lvlNum].getCollision(projectile);
 
+                Log.i("TAG", "Ball VelX: "+ projectile.velocityX + "    VelY: "+ projectile.velocityY );
+                if(projectile.thrown){
+                    if(projectile.velocityX == dx && projectile.velocityY == dy){
+                        fullThrow = true;
+                    }
+                    else{
+                        dx = projectile.velocityX;
+                        dy = projectile.velocityY;
+                    }
+                }
+                if(fullThrow){
+                    //Comment this out to stop the program from changing levels
+                    nextLevel();
+                }
 
                 if (!projectile.selected) {
 
                     if (projectile.velocityX < 0.05f && projectile.velocityX > 0 || projectile.velocityX > -0.05f && projectile.velocityX < 0){
                         projectile.velocityX = 0;
                     }
+
+                    if (Math.abs(projectile.velocityY) < 0.5f && Math.abs(projectile.velocityY) > 0){
+                        projectile.velocityY = 0;
+                    }
+
                     if (projectile.pos.y + projectile.radius < 1080) {
 
                         projectile.velocityY = projectile.velocityY + (Forces.Gravity * delta);
                         projectile.pos.y += (int) projectile.velocityY;
                     }
-                    if (projectile.pos.y + projectile.radius > 1080) {
+                    if (projectile.pos.y + projectile.radius > 1079) {
                         projectile.pos.y = 1080 - projectile.radius - 1;
                         projectile.velocityY *= -projectile.bounce;
                     }
@@ -168,19 +188,6 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 else {/*?*/}
-                if(projectile.thrown){
-                    if(projectile.velocityX == dx && projectile.velocityY == dy){
-                        fullThrow = true;
-                    }
-                    else{
-                        dx = projectile.velocityX;
-                        dy = projectile.velocityY;
-                    }
-                }
-                if(fullThrow){
-                    //Comment this out to stop the program from changing levels
-                    nextLevel();
-                }
                 postInvalidate(); // Tells our view to redraw itself, since our position changed.
             }
         }
@@ -219,8 +226,10 @@ public class GameActivity extends AppCompatActivity {
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             for (Projectile projectile: projectiles){
+                if (projectile.pos.x > 600 && projectile.pos.x < 740 && projectile.selected){
+                    canvas.drawLine(740,0,740,1080, paint);
+                }
                 projectile.draw(canvas);
-                debugPosition(projectile.pos.x,projectile.pos.y);
             }
             levels[lvlNum].draw(canvas);
             postInvalidate();
@@ -239,13 +248,18 @@ public class GameActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_MOVE:
                         Log.i("TAG", "Touch MOVE at " + event.getX() + "," + event.getY());
                         //if we are touching the main ball projectile
+
                         for (Projectile projectile: projectiles)
                         {
-                            if (projectile.touched((int)event.getX(),(int)event.getY())){
-                                projectile.move((int) event.getX(),(int) event.getY());
-                                projectile.velocityY = 0;
-                                projectile.velocityX = 0;
-                                projectile.selected = true;
+                            if (event.getX() < 740) {
+                                if (projectile.touched((int) event.getX(), (int) event.getY())) {
+                                    projectile.move((int) event.getX(), (int) event.getY());
+                                    projectile.velocityY = 0;
+                                    projectile.velocityX = 0;
+                                    projectile.selected = true;
+                                }
+                            } else {
+                                projectile.selected = false;
                             }
                         }
                         break;
@@ -294,9 +308,9 @@ public class GameActivity extends AppCompatActivity {
             for (Projectile projectile: projectiles)
             {
                 projectile.selected = false;
-                if (projectile.SwipeIntersect(e2)) {
+                if (projectile.SwipeIntersect(e2) && projectile.thrown != true) {
                     if (velocityX < -2000 || velocityX > 2000) {
-                        projectile.velocityX = velocityX / 2400.0f;
+                        projectile.velocityX = velocityX / 2000.0f;
                     } else {
                         projectile.velocityX = velocityX / 840.0f;
                     }
