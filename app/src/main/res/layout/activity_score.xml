@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScoreActivity"
+    android:orientation="vertical"
+    android:screenOrientation="landscape"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="YOUR FINAL SCORE IS"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        android:layout_marginTop="50dp"/>
+
+    <TextView
+        android:id="@+id/resultLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3 / 5"
+        android:textSize="30sp"
+        android:textColor="@color/colorAccent"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:textColor="@color/colorAccent"
+        android:id="@+id/totalScoreLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Score:"
+        android:textSize="20sp"
+        android:layout_marginTop="30dp"/>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
+
+
+
+        <Button
+            android:id="@+id/home"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:width="1dp"
+            android:text="Restart"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/scoreboard"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:text="Save Score"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toRightOf="@id/home" />
+
+    </LinearLayout>
+</LinearLayout>
