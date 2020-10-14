@@ -1,0 +1,10 @@
+targ,2100,900,null,100,100
+rect,700,400,null,50,1000
+rect,1100,550,null,50,1000
+rect,1500,550,null,50,1000
+rect,1900,-2000,null,50,3080
+port,925,900,null,50,2100,100,null,50
+port,1325,900,null,50,150,150,null,50
+port,1725,900,null,50,last
+rect,750,500,null,400,50,2,0,750,0
+meta,300,180,Choices,6

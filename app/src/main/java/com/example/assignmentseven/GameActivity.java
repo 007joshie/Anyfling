@@ -38,6 +38,8 @@ public class GameActivity extends AppCompatActivity {
     boolean fullThrow = false;
     float dx = 0;
     float dy = 0;
+    int playerScore = 0;
+    int levelScore = 0;
 
     Projectile ball = new Projectile(300,300,100);
     Projectile[] projectiles = {ball};
@@ -161,6 +163,7 @@ public class GameActivity extends AppCompatActivity {
 //                            }
                         if (collision instanceof Target) {
                             ((Target) collision).health -= Math.abs(projectile.velocityY + projectile.velocityY);
+                            levelScore += Math.abs(projectile.velocityY + projectile.velocityY);
                             if (((Target) collision).health <= 0) {
                                 ((Target) collision).destroyed = true;
                             }
@@ -279,6 +282,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+
     public void debugPosition(int _x, int _y){
         //setContentView(R.layout.activity_game);
         TextView debugX = (TextView) findViewById(R.id.positionX);
@@ -380,13 +384,17 @@ public class GameActivity extends AppCompatActivity {
         Level l4 = new Level(is);
         is = getResources().openRawResource(R.raw.level5);
         Level l5 = new Level(is);
-        levels = new Level[]{l1,l2,l3,l4,l5};
+        is = getResources().openRawResource(R.raw.level6);
+        Level l6 = new Level(is);
+        levels = new Level[]{l1,l2,l3,l4,l5,l6};
     }
 
     private void nextLevel(){
         SystemClock.sleep(1000);
         if(lvlNum < levels.length-1) {
             lvlNum++;
+            playerScore += levelScore;
+            levelScore = 0;
             projectiles[0].thrown = false;
             fullThrow = false;
             dx = 0;
@@ -403,7 +411,7 @@ public class GameActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), ScoreActivity.class);
 
             // FINAL SCORE HERE
-            intent.putExtra("SCORE", 1);
+            intent.putExtra("SCORE", playerScore);
 
             intent.putExtra("TOTAL_LEVELS", levels.length);
             startActivity(intent);

@@ -2,6 +2,6 @@ port,1600,200,null,40,2050,200,null,40
 rect,1800,-1080,null,50,2160
 rect,650,0,null,50,540
 targ,2050,800,null,150,100
-rect,1110,400,null,690,680
-boos,850,800,null,100,3
+rect,1410,400,null,390,680
+boos,900,800,null,100,3
 meta,300,180,Thinking with Portals,3

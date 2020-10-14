@@ -26,7 +26,7 @@ public class Level {
     public Level(InputStream is) throws IOException {
         obstacles = new ArrayList<Obstacle>();
         BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-
+        Portal lastLink = null;
         String line;
         while((line = br.readLine()) != null){
             Obstacle o;
@@ -59,10 +59,16 @@ public class Level {
                     break;
                 case "port":
                     o = new Portal(Integer.parseInt(token[1]), Integer.parseInt(token[2]), null, Integer.parseInt(token[4]));
-                    Portal link = new Portal(Integer.parseInt(token[5]), Integer.parseInt(token[6]), null, Integer.parseInt(token[8]));
-                    ((Portal)o).setLinked(link);
+                    if(token[5].equals("last")){
+                        ((Portal)o).setLinked(lastLink);
+                    }
+                    else{
+                        Portal link = new Portal(Integer.parseInt(token[5]), Integer.parseInt(token[6]), null, Integer.parseInt(token[8]));
+                        ((Portal)o).setLinked(link);
+                        lastLink = link;
+                        obstacles.add(link);
+                    }
                     obstacles.add(o);
-                    obstacles.add(link);
                     break;
                 case "boos":
                     o = new Booster(Integer.parseInt(token[1]), Integer.parseInt(token[2]), null, Integer.parseInt(token[4]),Integer.parseInt(token[5]));
