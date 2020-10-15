@@ -1,6 +1,7 @@
 package com.example.assignmentseven;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.view.MotionEvent;
 
 import static java.lang.Math.pow;
@@ -24,6 +25,8 @@ public class Projectile extends Shape{
         super(_startX,_startY,null);
         speedMod = 1;
         radius = _radius;
+        paint.setColor(Color.parseColor("#FFFB96"));
+
     }
 
     @Override

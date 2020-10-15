@@ -11,7 +11,8 @@ public class Booster extends CircleObstacle {
     public Booster(int _x, int _y, Drawable _sprite, int _radius, int _strength) {
         super(_x, _y, _sprite, _radius);
         strength = _strength;
-        paint.setColor(Color.RED);
+        paint.setColor(Color.parseColor("#B967FF"));
+
     }
 
     @Override

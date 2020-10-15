@@ -13,7 +13,7 @@ public class Target extends CircleObstacle {
     public Target(int _x, int _y, Drawable _sprite, int _radius, int _health) {
         super(_x, _y, _sprite, _radius);
         health = _health;
-        paint.setColor(Color.CYAN);
+        paint.setColor(Color.parseColor("#01CDFE"));
 
     }
 

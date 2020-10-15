@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -40,6 +41,8 @@ public class GameActivity extends AppCompatActivity {
     float dy = 0;
     int playerScore = 0;
     int levelScore = 0;
+    private SoundPlayer sound;
+    MediaPlayer music;
 
     Projectile ball = new Projectile(300,300,100);
     Projectile[] projectiles = {ball};
@@ -106,8 +109,12 @@ public class GameActivity extends AppCompatActivity {
                         projectile.pos.y += (int) projectile.velocityY;
                     }
                     if (projectile.pos.y + projectile.radius > 1079) {
+                        if(projectile.velocityY > 10){
+                            sound.playBoof();
+                        }
                         projectile.pos.y = 1080 - projectile.radius - 1;
                         projectile.velocityY *= -projectile.bounce;
+
                     }
 //                if (ball.pos.y - ball.radius < 0){
 //                    ball.pos.y = ball.radius+1;
@@ -138,6 +145,9 @@ public class GameActivity extends AppCompatActivity {
                                 projectile.pos.y = collision.pos.y - projectile.radius;
                                 projectile.velocityY *= -projectile.bounce;                        // top edge
                             }
+                            if(projectile.velocityY > 5 || projectile.velocityX > 5){
+                                sound.playBoof();
+                            }
                         }
 //                            Log.i("TAG", "Circle Collision at" + collision.pos.x + "    " + collision.pos.y);
 //                            if (projectile.pos.y < collision.pos.y){
@@ -166,13 +176,16 @@ public class GameActivity extends AppCompatActivity {
                             levelScore += Math.abs(projectile.velocityY + projectile.velocityY);
                             if (((Target) collision).health <= 0) {
                                 ((Target) collision).destroyed = true;
+                                sound.playBoom();
                             }
                         }
                         if (collision instanceof Portal){
                             projectile.move(((Portal) collision).linked.pos.x,((Portal) collision).linked.pos.y);
+                            sound.playZoom();
                         }
                         if(collision instanceof  Booster){
                             projectile.velocityY-=((Booster)collision).strength;
+                            sound.playBoost();
                         }
 
                     }
@@ -350,11 +363,13 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
+        sound = new SoundPlayer(this);
+        music = MediaPlayer.create(this,R.raw.chiptune);
         // Hide Action Bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
+        music.setLooping(true);
 
         String version = BuildConfig.VERSION_NAME;
 
@@ -369,8 +384,19 @@ public class GameActivity extends AppCompatActivity {
         GraphicsView graphicsView = new GraphicsView(this);
         ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.c1_game);
         constraintLayout.addView(graphicsView);
-
         graphicsView.PhysicsThread();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        music.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        music.pause();
     }
 
     private void loadLevels() throws IOException {
@@ -390,7 +416,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void nextLevel(){
-        SystemClock.sleep(1000);
+        //SystemClock.sleep(1000);
         if(lvlNum < levels.length-1) {
             lvlNum++;
             playerScore += levelScore;

@@ -15,14 +15,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/homescreen_title"
-            android:textSize="50dp"
-            android:layout_margin="20dp"
-            android:padding="40dp"
+            android:src="@drawable/logo"
+            android:layout_margin="0dp"
+            android:padding="0dp"
+
             />
 
         <Button
@@ -30,10 +30,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:padding="15dp"
             android:text="@string/string_button_start"
             android:onClick="onClickStart"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_marginHorizontal="10dp"
+            android:text="@string/info"
+            android:onClick="info"
             />
 
     </LinearLayout>

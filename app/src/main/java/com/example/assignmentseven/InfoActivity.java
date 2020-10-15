@@ -1,21 +1,15 @@
 package com.example.assignmentseven;
 
-import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.TextView;
+public class InfoActivity extends AppCompatActivity {
 
-public class ScoreActivity extends AppCompatActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -31,34 +25,17 @@ public class ScoreActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-        setContentView(R.layout.activity_score);
+        setContentView(R.layout.activity_info);
 
-
-        TextView totalScoreLabel = findViewById(R.id.totalScoreLabel);
 
         // Hide Action Bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        int score = getIntent().getIntExtra("SCORE", 0);
-        int totalLevels = getIntent().getIntExtra("TOTAL_LEVELS", 0);
-
-        totalScoreLabel.setText("Total Score : " + score);
     }
-
-    public void saveScore(View v){
-
-    }
-
-    public void returnTop(View view) {
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-    }
-
-
 }

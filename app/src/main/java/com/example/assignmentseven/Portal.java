@@ -21,8 +21,8 @@ public class Portal extends CircleObstacle {
 
     public void setLinked(Portal p){
         linked = p;
-        linked.paint.setColor(Color.BLUE);
-        paint.setColor(Color.YELLOW);
+        linked.paint.setColor(Color.parseColor("#0023BD"));
+        paint.setColor(Color.parseColor("#C98000"));
         linked.out = true;
     }
 

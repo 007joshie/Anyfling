@@ -16,7 +16,7 @@ public abstract class Shape {
         pos = new Point(_x,_y);
         sprite = _sprite;
         rotation = 0.0f;
-        paint.setColor(Color.GREEN);
+        paint.setColor(Color.parseColor("#FF71CE"));
     }
 
     public abstract void draw(Canvas canvas);

@@ -4,6 +4,8 @@
     <string name="homescreen_title">Name</string>
     <string name="dev_names">Developed By: Liam Clow &amp; Joshua Boag</string>
     <string name="title_activity_score">ScoreActivity</string>
+    <string name="gameInfo">This is a simple ball throwing game. Throw your green ball from the left-hand side of the screen toward the blue targets. Accuracy and ball Speed award more points when the target is struck!
+    Watch out for moving obstacles, portals and red boosters. All of these objects can be used to aid you in getting the winning throw!</string>>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.
@@ -11,4 +13,6 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="good_luck">Good Luck!</string>
+    <string name="info">Info</string>
 </resources>
