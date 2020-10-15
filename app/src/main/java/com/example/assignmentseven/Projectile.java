@@ -26,7 +26,6 @@ public class Projectile extends Shape{
         speedMod = 1;
         radius = _radius;
         paint.setColor(Color.parseColor("#FFFB96"));
-
     }
 
     @Override

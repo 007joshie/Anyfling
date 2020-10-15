@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HighScoreActivity"
+    android:orientation="vertical"
+    android:screenOrientation="landscape"
+    android:gravity="center_horizontal"
+    android:background="@drawable/neon"
+
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:src="@drawable/logo"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="0dp"
+        android:textColor="@color/white"
+        android:text="Highscores"
+        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+    <TextView
+        android:id="@+id/tv_score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_margin="10dp"
+        android:text=""
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="bold"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="166dp"
+            android:layout_height="wrap_content"
+            android:text="@string/reset_highscores"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:onClick="reset"
+            android:layout_margin="5dp"
+            />
+        <Button
+            android:layout_width="166dp"
+            android:layout_height="wrap_content"
+            android:text="@string/main_menu"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:onClick="returnToStart"
+            android:layout_margin="5dp"
+            />
+    </LinearLayout>
+
+
+
+</LinearLayout>

@@ -4,7 +4,7 @@
     <string name="homescreen_title">Name</string>
     <string name="dev_names">Developed By: Liam Clow &amp; Joshua Boag</string>
     <string name="title_activity_score">ScoreActivity</string>
-    <string name="gameInfo">This is a simple ball throwing game. Throw your green ball from the left-hand side of the screen toward the blue targets. Accuracy and ball Speed award more points when the target is struck!
+    <string name="gameInfo">This is a simple ball throwing game. Throw your yellow ball from the left-hand side of the screen toward the blue targets. Accuracy and ball Speed award more points when the target is struck!
     Watch out for moving obstacles, portals and red boosters. All of these objects can be used to aid you in getting the winning throw!</string>>
     <!--
     This string is used for square devices and overridden by hello_world in
@@ -15,4 +15,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="good_luck">Good Luck!</string>
     <string name="info">Info</string>
+    <string name="view_highscores">View Highscores</string>
+    <string name="reset_highscores">Reset Highscores</string>
+    <string name="main_menu">Main Menu</string>
 </resources>

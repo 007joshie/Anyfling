@@ -399,8 +399,20 @@ public class GameActivity extends AppCompatActivity {
         music.pause();
     }
 
+    public void exit(View v){
+        finish();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+    }
+
     private void loadLevels() throws IOException {
-        InputStream is = getResources().openRawResource(R.raw.level1);
+        InputStream is = getResources().openRawResource(R.raw.first);
         Level l1 = new Level(is);
         is = getResources().openRawResource(R.raw.level2);
         Level l2 = new Level(is);
@@ -452,6 +464,7 @@ public class GameActivity extends AppCompatActivity {
             projectiles[0].velocityX = 0;
             projectiles[0].pos = levels[lvlNum].startPos;
             levels[lvlNum].reset();
+            finish();
         }
     }
 }

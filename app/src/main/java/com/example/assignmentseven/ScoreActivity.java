@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 public class ScoreActivity extends AppCompatActivity {
 
+    int score;
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -46,14 +47,20 @@ public class ScoreActivity extends AppCompatActivity {
         actionBar.hide();
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        int score = getIntent().getIntExtra("SCORE", 0);
+        score = getIntent().getIntExtra("SCORE", 0);
         int totalLevels = getIntent().getIntExtra("TOTAL_LEVELS", 0);
 
         totalScoreLabel.setText("Total Score : " + score);
     }
 
     public void saveScore(View v){
+        SharedPreferences preferences = getSharedPreferences("PREFS",0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("last", score);
+        editor.apply();
 
+        Intent i = new Intent(getApplicationContext(), HighScoreActivity.class);
+        startActivity(i);
     }
 
     public void returnTop(View view) {

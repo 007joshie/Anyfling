@@ -43,6 +43,10 @@
         <activity
             android:name=".InfoActivity"
             android:screenOrientation="landscape"/>
+        <activity
+            android:name=".HighScoreActivity"
+            android:screenOrientation="landscape"/>
+
     </application>
 
 </manifest>
