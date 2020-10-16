@@ -18,4 +18,9 @@
     <string name="view_highscores">View Highscores</string>
     <string name="reset_highscores">Reset Highscores</string>
     <string name="main_menu">Main Menu</string>
+    <string name="welcome_to_anyfling">Welcome to Anyfling!</string>
+    <string name="your_final_score_is">YOUR FINAL SCORE IS</string>
+    <string name="total_score">Total Score:</string>
+    <string name="restart">Restart</string>
+    <string name="save_score">Save Score</string>
 </resources>

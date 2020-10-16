@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="YOUR FINAL SCORE IS"
+        android:text="@string/your_final_score_is"
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
         android:layout_marginTop="50dp"/>
@@ -23,7 +23,7 @@
         android:id="@+id/totalScoreLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Score:"
+        android:text="@string/total_score"
         android:textSize="20sp"
         android:layout_marginTop="30dp"/>
 
@@ -42,7 +42,7 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:width="1dp"
-            android:text="Restart"
+            android:text="@string/restart"
             android:textSize="18sp"
             android:onClick="returnTop"
             />
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:text="Save Score"
+            android:text="@string/save_score"
             android:textSize="18sp"
             android:onClick="saveScore"
             app:layout_constraintLeft_toRightOf="@id/home" />

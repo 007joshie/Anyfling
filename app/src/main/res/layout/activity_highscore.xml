@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <Button
-            android:layout_width="166dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="@string/reset_highscores"
             android:textStyle="bold"
@@ -52,7 +52,7 @@
             android:layout_margin="5dp"
             />
         <Button
-            android:layout_width="166dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="@string/main_menu"
             android:textStyle="bold"
