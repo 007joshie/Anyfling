@@ -40,13 +40,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //mainMusic.pause();
+        mainMusic.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //mainMusic.start();
+        mainMusic.start();
     }
 
     public void onClickStart(View v){

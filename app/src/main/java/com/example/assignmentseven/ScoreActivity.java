@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 public class ScoreActivity extends AppCompatActivity {
 
+    MediaPlayer endMusic;
     int score;
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -39,7 +41,9 @@ public class ScoreActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         setContentView(R.layout.activity_score);
 
-
+        endMusic = MediaPlayer.create(this,R.raw.chiptuneending);
+        endMusic.setLooping(false);
+        endMusic.start();
         TextView totalScoreLabel = findViewById(R.id.totalScoreLabel);
 
         // Hide Action Bar
