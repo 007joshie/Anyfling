@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -44,6 +45,7 @@ public class GameActivity extends AppCompatActivity {
     private SoundPlayer sound;
     MediaPlayer music;
 
+    Drawable d = getResources().getDrawable(R.drawable.ball, null);
     Projectile ball = new Projectile(300,300,100);
     Projectile[] projectiles = {ball};
 
@@ -125,16 +127,10 @@ public class GameActivity extends AppCompatActivity {
 
                         if (collision instanceof RectangleObstacle) {
                             if (projectile.pos.x < collision.pos.x + 5) {
-                                if (projectile.velocityX == 0 && projectile.velocityY > 0.5){
-                                    projectile.velocityX += 0.2f;
-                                }
                                 projectile.velocityX *= -projectile.bounce;                         // left edge
                             }
                             if (projectile.pos.x > collision.pos.x + collision.getWidth() - 5) {
                                 projectile.velocityX *= -projectile.bounce;       // right edge
-                                if (projectile.velocityX == 0 && projectile.velocityY > 0.5){
-                                    projectile.velocityX += 0.2f;
-                                }
                             }
 
                             if (projectile.pos.y > collision.pos.y + collision.getHeight()) {
@@ -247,6 +243,7 @@ public class GameActivity extends AppCompatActivity {
                     canvas.drawLine(740,0,740,1080, paint);
                 }
                 projectile.draw(canvas);
+
             }
             levels[lvlNum].draw(canvas);
             postInvalidate();
@@ -368,6 +365,7 @@ public class GameActivity extends AppCompatActivity {
         // Hide Action Bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
 
         music.setLooping(true);
 

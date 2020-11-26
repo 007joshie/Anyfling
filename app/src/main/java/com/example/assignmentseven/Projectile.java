@@ -1,5 +1,6 @@
 package com.example.assignmentseven;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.MotionEvent;
@@ -12,6 +13,7 @@ public class Projectile extends Shape{
     float velocityX = 0;
     float velocityY = 0;
     float bounce = 0.6f;
+    Bitmap bitmapImg;
 
 
     boolean selected = false;
@@ -21,8 +23,10 @@ public class Projectile extends Shape{
 
     int hitboxSwipe = 100;
 
-    public Projectile(int _startX, int _startY, int _radius){
+
+    public Projectile(Bitmap bitmap, int _startX, int _startY, int _radius){
         super(_startX,_startY,null);
+        bitmapImg = bitmap;
         speedMod = 1;
         radius = _radius;
         paint.setColor(Color.parseColor("#FFFB96"));
@@ -30,7 +34,9 @@ public class Projectile extends Shape{
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawCircle(pos.x,pos.y,radius,paint);
+
+        bitmapImg.drawBitmap(canvas);
+        //canvas.drawCircle(pos.x,pos.y,radius,paint);
     }
 
     @Override
